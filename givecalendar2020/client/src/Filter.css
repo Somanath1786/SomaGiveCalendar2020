@@ -1,0 +1,28 @@
+.filterContainer {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+}
+
+.filterRow {
+    display : flex;
+    height: 30px;
+    margin: 5px;
+}
+
+.filterKey {
+    flex-basis: 40%;
+}
+
+.filterValue {
+    flex-basis: 60%;
+}
+
+.filterButton {
+    margin-top: 20px;
+    margin-right: 5px;
+    margin-left: 5px;
+    height: 30px;
+    width: 40%;
+}

@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Header from './Header';
+import Filter from './Filter';
+import GiveCalendar from './Calendar';
+import { Label } from 'office-ui-fabric-react/lib/Label'
 
 class App extends Component {
 
   state = {
     response : '',
-    calEvents : ''
+    calEvents : []
   }
 
   componentDidMount() {
@@ -31,10 +35,10 @@ class App extends Component {
       redirect: 'follow'
     };
 
-    fetch("https://public-api.benevity-staging.org/search/givingopportunities?page_size=100&q=", requestOptions)
+    fetch("https://public-api.benevity-staging.org/search/givingopportunities?page_size=100", requestOptions)
     .then(response => response.json())
     .then(results => {
-      this.setState({response : results})
+      //this.setState({response : results})
       this.processEventsForCalendar(results)
     })
   }
@@ -51,11 +55,11 @@ class App extends Component {
       var start_time = this.getStartTime(givingOppurtunities[i].tags)
       if (start_time != undefined)
       {
-        let end_time = start_time;
+        let end_time = new Date(start_time);
         end_time.setDate(start_time.getDate() + 1);
 
-        calendarEvent["start_time"] = start_time;
-        calendarEvent["end_time"] = end_time;
+        calendarEvent["start"] = start_time;
+        calendarEvent["end"] = end_time;
         calendarEvent["id"] = givingOppurtunities[i].id;
         calendarEvent["title"] = givingOppurtunities[i].title;
         calendarEvent["description"] = givingOppurtunities[i].description;
@@ -86,6 +90,21 @@ class App extends Component {
   render(){
     return (
       <div className="App">
+        <header className="header">
+          <Header />
+        </header>
+        <Label className="msgBar">
+          Please note : All events show up as All day events. Check event descrption or contact the respective Vpal for timing details
+        </Label>
+        <div className="divContainer">
+          <section className="filter">
+            <Filter />
+          </section>
+          <section className="calendar">
+            <GiveCalendar events= {this.state.calEvents}/>
+          </section>
+        </div>
+
       </div>
     );
   }
